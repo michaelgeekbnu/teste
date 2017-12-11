@@ -1,0 +1,53 @@
+<!DOCTYPE>
+<html>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript">
+
+        var ws;
+
+        $().ready(function () {
+            $("#Conectar").click(function () {
+                ws = new WebSocket("ws://127.0.0.1:8181");
+
+                ws.onopen = function () {
+                    $("#Status").text("Conectado.");
+                };
+
+                ws.onmessage = function (evt) {
+                    $("#Banner").text(evt.data);
+                    //ws.send("ping");
+                };
+
+                ws.onclose = function () {
+                    $("#Banner").text("");
+                    $("#Status").text("Desconectado");
+                };
+
+                $(this).attr('disabled', 'disabled');
+                $("#Desconectar").removeAttr('disabled');
+
+            });
+
+            $("#Desconectar").click(function () {
+                ws.close();
+                $(this).attr('disabled', 'disabled');
+                $("#Conectar").removeAttr('disabled');
+            });
+        });
+    </script>
+
+
+<head>
+</head>
+
+<body>
+        <input type="button" value="Conectar" id="Conectar" />
+        <input type="button" value="Desconectar" id="Desconectar" disabled />
+        <br />
+        <br />
+        <span id="Status">Desconectado</span>
+        <span id="Banner" style="font-size:120px; text-align:center; display:block"></span>
+    </body>
+    
+
+</html>
